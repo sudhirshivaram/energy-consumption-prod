@@ -1,0 +1,54 @@
+preprocessing:
+  column_mapping:
+    X1: relative_compactness
+    X2: surface_area
+    X3: wall_area
+    X4: roof_area
+    X5: overall_height
+    X6: orientation
+    X7: glazing_area
+    X8: glazing_area_distribution
+    Y1: heating_load
+    Y2: cooling_load
+  
+  columns_to_drop:
+    - Y2
+  
+  reset_index: true
+
+feature_engineering:
+  lag_features: {}
+  fill_method: bfill
+
+training:
+  target_column: heating_load
+  target_shift: 0       # No shift for regression task since dataset is the standard UCI Energy Efficiency Dataset (768 different building simulations):
+  test_size: 0.2
+  random_state: 42
+  shuffle: true
+  
+  model:
+    type: LinearRegression
+    params: 
+      fit_intercept: true
+   
+postprocessing:
+  model_save_path: models/prod/energy_forecast_model.cbm
+  prediction_columns:
+    - timestamp
+    - predicted_heating_load
+  time_increment_minutes: 60
+
+data:
+  raw_data:
+    csv_path: data/raw_data/csv/energy-efficiency-data.csv
+    parquet_path: data/raw_data/parquet/energy-efficiency-data.parquet
+  
+  prod_data:
+    csv_path: data/prod_data/csv/predictions.csv
+    parquet_path: data/prod_data/parquet/predictions.parquet
+
+inference:
+  model_path: models/prod/energy_forecast_model.cbm
+  batch_size: 100
+  output_format: parquet

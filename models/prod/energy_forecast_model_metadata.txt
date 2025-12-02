@@ -1,0 +1,34 @@
+============================================================
+MODEL TRAINING METADATA
+============================================================
+
+Training Date: 2025-12-02 08:48:50
+Model Path: models/prod/energy_forecast_model.cbm
+
+TRAINING METRICS:
+----------------------------------------
+MSE: 2.9873
+RMSE: 1.7284
+MAE: 1.1850
+R2: 0.970400
+MAPE: 5.4881%
+
+TEST METRICS:
+----------------------------------------
+MSE: 3.7827
+RMSE: 1.9449
+MAE: 1.3781
+R2: 0.963709
+MAPE: 6.2457%
+
+FEATURES (9):
+----------------------------------------
+1. relative_compactness
+2. surface_area
+3. wall_area
+4. roof_area
+5. overall_height
+6. orientation
+7. glazing_area
+8. glazing_area_distribution
+9. cooling_load
