@@ -3,7 +3,6 @@ import numpy as np
 from typing import Dict, Any, Optional
 from pathlib import Path
 from datetime import datetime, timedelta
-from catboost import CatBoostRegressor
 import joblib
 
 
@@ -22,7 +21,7 @@ class PostprocessingPipeline:
         """
         self.config = config
         self.postprocessing_config = config.get('postprocessing', {})
-        self.model_save_path = self.postprocessing_config.get('model_save_path', 'models/prod/energy_forecast_model.cbm')
+        self.model_save_path = self.postprocessing_config.get('model_save_path', 'models/prod/energy_forecast_model.pkl')
         self.prediction_columns = self.postprocessing_config.get('prediction_columns', ['timestamp', 'predicted_heating_load'])
         self.time_increment_minutes = self.postprocessing_config.get('time_increment_minutes', 60)
     
@@ -31,7 +30,7 @@ class PostprocessingPipeline:
         Save trained model to disk.
         
         Args:
-            model: Trained CatBoost model
+            model: Generic
             model_path: Optional custom path to save model (uses config path if not provided)
         """
         if model is None:
@@ -41,7 +40,7 @@ class PostprocessingPipeline:
         
         save_path.parent.mkdir(parents=True, exist_ok=True)
         
-        # Check if model has save_model method (CatBoost)
+        # Check if model has save_model method (e.g., CatBoost, XGBoost)
         if hasattr(model, 'save_model'):
             model.save_model(str(save_path))
         else:
@@ -59,7 +58,7 @@ class PostprocessingPipeline:
             model_path: Optional custom path to load model (uses config path if not provided)
             
         Returns:
-            Loaded CatBoost model
+            Loaded Generic model
         """
         load_path = Path(model_path) if model_path else Path(self.model_save_path)
         
@@ -67,13 +66,9 @@ class PostprocessingPipeline:
             raise FileNotFoundError(f"Model file not found: {load_path}")
         
         # Try loading with joblib first (sklearn models)
-        try:
-            model = joblib.load(str(load_path))
-        except:
-            # Fall back to CatBoost load method
-            model = CatBoostRegressor()
-            model.load_model(str(load_path))
         
+        model = joblib.load(str(load_path))
+
         print(f"\nModel loaded successfully from: {load_path}")
         
         return model
@@ -211,7 +206,7 @@ class PostprocessingPipeline:
         Run the complete postprocessing pipeline.
         
         Args:
-            model: Trained CatBoost model
+            model: Trained Generic model
             metrics: Training and test metrics
             feature_names: List of feature names used in training
         """

@@ -1,6 +1,5 @@
 from typing import Dict, Any, Tuple
 from pathlib import Path
-from catboost import CatBoostRegressor
 
 from pipelines.preprocessing import PreprocessingPipeline
 from pipelines.feature_engineering import FeatureEngineeringPipeline
@@ -34,7 +33,7 @@ class PipelineRunner:
         self.trained_model = None
         self.metrics = None
     
-    def run_training(self) -> Tuple[CatBoostRegressor, Dict[str, Any]]:
+    def run_training(self) -> Tuple[Dict[str, Any]]:
         """
         Run the complete training pipeline from raw data to trained model.
         
@@ -90,12 +89,12 @@ class PipelineRunner:
             
         print("-"*80)
     
-    def get_model(self) -> CatBoostRegressor:
+    def get_model(self) -> Any:
         """
         Get the trained model.
         
         Returns:
-            Trained CatBoost model
+            Trained model
         """
         if self.trained_model is None:
             raise ValueError("Model has not been trained yet. Run run_training() first.")

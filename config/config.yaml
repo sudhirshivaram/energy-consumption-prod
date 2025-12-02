@@ -33,7 +33,7 @@ training:
       fit_intercept: true
    
 postprocessing:
-  model_save_path: models/prod/energy_forecast_model.cbm
+  model_save_path: models/prod/energy_forecast_model.pkl
   prediction_columns:
     - timestamp
     - predicted_heating_load
@@ -49,6 +49,6 @@ data:
     parquet_path: data/prod_data/parquet/predictions.parquet
 
 inference:
-  model_path: models/prod/energy_forecast_model.cbm
+  model_path: models/prod/energy_forecast_model.pkl
   batch_size: 100
   output_format: parquet

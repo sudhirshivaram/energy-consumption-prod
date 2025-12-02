@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 from typing import Dict, Any, Tuple, Optional
 from sklearn.model_selection import train_test_split
-from catboost import CatBoostRegressor
 import optuna
 from pathlib import Path
+from catboost import CatBoostRegressor
 
 from pipelines.model_factory import ModelFactory
 
@@ -142,7 +142,7 @@ class TrainingPipeline:
         if params is None:
             params = self.model_params.copy()
         
-        model_type = self.model_config.get('type', 'CatBoostRegressor')
+        model_type = self.model_config.get('type', 'LinearRegression')
         
         print(f"\nTraining {model_type} with parameters:")
         for key, value in params.items():

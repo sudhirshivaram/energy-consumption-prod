@@ -2,8 +2,8 @@
 MODEL TRAINING METADATA
 ============================================================
 
-Training Date: 2025-12-02 08:48:50
-Model Path: models/prod/energy_forecast_model.cbm
+Training Date: 2025-12-02 10:53:45
+Model Path: models/prod/energy_forecast_model.pkl
 
 TRAINING METRICS:
 ----------------------------------------
