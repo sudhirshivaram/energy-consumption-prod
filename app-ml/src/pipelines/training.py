@@ -304,7 +304,11 @@ class TrainingPipeline:
             'R2': r2_score(y_test, y_test_pred),
             'MAPE': np.mean(np.abs((y_test - y_test_pred) / y_test)) * 100
         }
-        
+
+        # Check for negative predictions
+        train_negative = np.sum(y_train_pred < 0)
+        test_negative = np.sum(y_test_pred < 0)
+
         print("\n" + "="*60)
         print("MODEL EVALUATION")
         print("="*60)
@@ -326,7 +330,16 @@ class TrainingPipeline:
                 print(f"  {metric_name}: {value:.4f}%")
             else:
                 print(f"  {metric_name}: {value:.4f}")
-        
+
+        # Report negative predictions
+        print("\nPrediction Range Check:")
+        print(f"  Training set - Negative predictions: {train_negative} / {len(y_train_pred)}")
+        if train_negative > 0:
+            print(f"    Min prediction: {y_train_pred.min():.4f}")
+        print(f"  Test set - Negative predictions: {test_negative} / {len(y_test_pred)}")
+        if test_negative > 0:
+            print(f"    Min prediction: {y_test_pred.min():.4f}")
+
         return {
             'train': train_metrics,
             'test': test_metrics
